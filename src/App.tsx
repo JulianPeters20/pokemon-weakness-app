@@ -52,7 +52,13 @@ export function App() {
       )
       setWeaknesses(calculateWeaknesses(multipliers))
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong")
+      if (err instanceof TypeError) {
+        setError("Network error — unable to reach PokéAPI. Please check your internet connection.")
+      } else if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError("An unexpected error occurred. Please try again.")
+      }
     } finally {
       setIsLoading(false)
     }
@@ -76,7 +82,7 @@ export function App() {
 
       {error && (
         <div className="state-message error">
-          <p>{error}. Please check the spelling and try again.</p>
+          <p>{error}</p>
         </div>
       )}
 
