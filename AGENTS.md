@@ -37,6 +37,9 @@ The main screen should include:
 - weakness/resistance grouping by multiplier
 - stat display with labels and visual bars
 - mobile-friendly responsive layout
+- Pokémon suggestions should appear after the user has typed at least 2 characters.
+- Unknown Pokémon must not leave empty UI sections, broken states, or empty routes.
+- Error handling must distinguish between invalid Pokémon names, network/API failures, and unexpected application errors.
 
 Handle invalid names gracefully and suggest that the user check spelling.
 
@@ -58,6 +61,8 @@ Normalize Pokémon names before lookup:
 Avoid storing API secrets; PokéAPI does not require an API key.
 
 Do not introduce unnecessary frameworks, state managers, or UI libraries.
+
+For autocomplete, fetch or derive a complete Pokémon name list from PokéAPI instead of maintaining a partial hardcoded list.
 
 ## Quality expectations
 
