@@ -13,6 +13,11 @@ export interface PokemonStat {
   }
 }
 
+export interface PokemonSpeciesRef {
+  name: string
+  url: string
+}
+
 export interface PokemonSprites {
   other: {
     "official-artwork": {
@@ -24,6 +29,7 @@ export interface PokemonSprites {
 export interface Pokemon {
   id: number
   name: string
+  species: PokemonSpeciesRef
   types: PokemonType[]
   stats: PokemonStat[]
   sprites: PokemonSprites

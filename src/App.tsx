@@ -40,12 +40,15 @@ export function App() {
       const data = await fetchPokemon(query)
       setPokemon(data)
 
+      const speciesUrlParts = data.species.url.replace(/\/$/, "").split("/")
+      const speciesId = Number(speciesUrlParts[speciesUrlParts.length - 1])
+
       const [species, ...typeDatas] = await Promise.all([
-        fetchPokemonSpecies(data.id),
+        fetchPokemonSpecies(speciesId).catch(() => null),
         ...data.types.map((t) => fetchTypeData(t.type.name)),
       ])
 
-      setGeneration(extractGeneration(species.generation.url))
+      setGeneration(species ? extractGeneration(species.generation.url) : "Unknown")
 
       const multipliers = combineDamageRelations(
         typeDatas.map((td) => td.damage_relations),
