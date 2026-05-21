@@ -176,6 +176,142 @@ If persistence is added later:
 - keep persistence logic isolated
 - never require accounts, authentication, or a backend unless explicitly requested
 
+## Pokémon Unbound encounter tracking
+
+The app should support encounter tracking for a Pokémon Unbound Soul Link Nuzlocke.
+
+Use the uploaded Pokémon Unbound Location Guide workbook as the source for local encounter data when available.
+
+Relevant source tabs:
+- Grass & Cave Encounters
+- Surfing, Fishing, Rock Smash
+- Gift & Static Encounters
+- LegendMythical & Ultra Beasts
+- In-game trades & Game Corner
+- Swarm Schedule
+
+Do not use PokéAPI for Pokémon Unbound encounter locations. PokéAPI does not contain Pokémon Unbound-specific encounter tables.
+
+Encounter tracking rules:
+- store encounter data in local typed data files
+- do not scrape Google Sheets or websites at runtime
+- group encounters by location and method
+- each location should be checkable as used/completed
+- checked locations should be visually crossed out or clearly marked
+- each encounter may have unlock requirements
+- encounter visibility must update live based on the selected progress filters
+
+Required progress filters:
+- badge count
+- postgame status
+- rod level: none, old, good, super
+- Surf availability
+- Rock Smash availability
+- underwater access
+- ADM availability
+- Devon Scope availability
+- enabled encounter categories: grass/cave, surf, fishing, rock smash, static, gift, mission reward, legendary, trade, game corner, swarm
+- completed missions where needed
+
+Encounter requirements should be represented as typed metadata, not as unstructured UI-only text.
+
+Dead Pokémon tracking rules:
+- provide a dedicated Dead Pokémon / Graveyard section
+- dead Pokémon should be addable through the existing Pokémon selector/search where practical
+- dead Pokémon entries should show at least name, sprite, and type badges
+- dead Pokémon entries should be removable
+
+Because this is a tracker, user state should eventually persist in localStorage:
+- active Soul Link slots
+- dead Pokémon
+- checked encounter locations
+- progress filters
+
+## Randomizer rules
+
+This Soul Link challenge is played with a randomized Pokémon Unbound ROM.
+
+Because the game is randomized:
+- official Pokémon Unbound encounter tables are used only for locations, encounter methods, and unlock requirements
+- do not treat listed encounter Pokémon as guaranteed or authoritative
+- do not display encounter Pokémon as fixed expected encounters unless the UI clearly labels them as "vanilla/reference data"
+- prioritize tracking whether a location has been used over showing exact vanilla encounter pools
+- the user should be able to manually enter or select the actually encountered randomized Pokémon
+- encounter checklist entries should focus on:
+  - location
+  - encounter method
+  - unlock requirements
+  - used/completed state
+  - optional notes
+  - optional actual encountered Pokémon entered by the user
+
+The tracker should support randomized gameplay by letting users record the real randomized encounter they received at each location.
+
+Encounter filtering should still apply because unlock conditions are not necessarily randomized:
+- rods still unlock fishing encounters
+- Surf still unlocks Surf encounters
+- Rock Smash still unlocks Rock Smash encounters
+- postgame-only encounters should remain hidden unless postgame is enabled
+- static/gift/mission/trade/game-corner/swarm categories should be toggleable
+- mission, item, weekday, daily, and weekly requirements should be represented as metadata where practical
+
+When using the Pokémon Unbound Location Guide workbook:
+- extract and store locations, methods, and requirements
+- store vanilla Pokémon names only as optional reference information
+- keep randomizer-specific user-entered encounter Pokémon separate from vanilla reference data
+
+## Pokémon Lookup / Battle Helper
+
+The app should include a standalone informational Pokémon Lookup / Battle Helper section at the bottom of the page.
+
+This section is separate from the active Soul Link team, Graveyards, Box, and Encounter Tracker.
+
+Lookup rules:
+- users can search a Pokémon for information only
+- lookup must not modify active team slots
+- lookup must not modify Graveyards
+- lookup must not modify Box / Reserve Pairs
+- lookup must not modify encounter checklist state
+- Graveyard, Box, and active-team restrictions do not block lookup
+- global Pokémon availability still applies: generations 1–7 only, no Mega Pokémon
+
+The lookup result should show:
+- name
+- sprite/artwork
+- types
+- base stats
+- weaknesses, resistances, and immunities
+- optional level-based current moveset
+
+Level-based moveset rules:
+- allow entering a level from 1–100
+- calculate the current moveset as the last four level-up moves learned at or before that level
+- use only `level-up` move learn methods
+- exclude TM, HM, tutor, egg, machine, and evolution moves
+- handle missing move data with a clear empty state
+- PokéAPI move data is official reference data and may not match Pokémon Unbound or randomized move settings exactly
+- label or document move data as reference data
+
+## Evolution-line lock rules
+
+Standard Nuzlocke death logic should lock an entire evolution line, not only the exact Pokémon form that died.
+
+If any Pokémon is in either player's Graveyard:
+- all Pokémon in that Pokémon's evolution line become unavailable everywhere
+- this applies globally to both players
+- this applies to active team selection and Graveyard search
+- only the actual dead Pokémon should be added to the Graveyard, not every evolution stage
+
+Examples:
+- Charmander in Graveyard locks Charmander, Charmeleon, and Charizard
+- Charizard in Graveyard locks Charmander, Charmeleon, and Charizard
+- Bulbasaur in Graveyard locks Bulbasaur, Ivysaur, and Venusaur
+- Eevee in Graveyard locks Eevee and all Eeveelutions
+
+Removing a Pokémon from Graveyard unlocks its evolution line again unless another member of that same evolution line is still in either Graveyard.
+
+Evolution-line data should come from PokéAPI species/evolution-chain data or a verified local dataset. Keep this logic separate from UI components and cache lookups where practical.
+
 ## Testing expectations
 
 Add or update tests when a test setup exists.
