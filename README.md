@@ -1,6 +1,6 @@
 # Pokémon Unbound Soul Link Companion
 
-A Soul Link Nuzlocke companion website for two players playing Pokémon Unbound.
+A Soul Link Nuzlocke companion website for two players playing Pokémon Unbound
 
 ## Setup
 
