@@ -395,6 +395,34 @@ export function usePersistentRunState() {
     }
   }, [boxPairs, lockedNames])
 
+  const handleActivateReservePair = useCallback((boxId: string) => {
+    const pair = boxPairs.find((b) => b.id === boxId)
+    if (!pair) return
+    if (!pair.player1.pokemon || !pair.player2.pokemon) return
+
+    const idx = slots.findIndex((s) => !s.player1.pokemon && !s.player2.pokemon)
+    if (idx === -1) return
+
+    const p1Name = pair.player1.pokemon.name.toLowerCase()
+    const p2Name = pair.player2.pokemon.name.toLowerCase()
+
+    if (lockedNames.has(p1Name) || lockedNames.has(p2Name)) return
+    if (activeNames.has(p1Name) || activeNames.has(p2Name)) return
+
+    setBoxPairs((prev) => prev.filter((b) => b.id !== boxId))
+    setSlots((prev) => {
+      const next = [...prev] as SoulLinkTeam
+      next[idx] = {
+        ...next[idx],
+        player1: { ...pair.player1 },
+        player2: { ...pair.player2 },
+        route: pair.route,
+        notes: pair.notes,
+      }
+      return next
+    })
+  }, [boxPairs, slots, lockedNames, activeNames])
+
   const handleToggleUsed = useCallback((locationId: string, method: EncounterMethod) => {
     const key = `${locationId}::${method}`
     setUsedLocations((prev) => {
@@ -471,6 +499,7 @@ export function usePersistentRunState() {
     handleAddBoxPair,
     handleRemoveBoxPair,
     handleMarkBoxPairDead,
+    handleActivateReservePair,
     getBlockReason,
   }
 }

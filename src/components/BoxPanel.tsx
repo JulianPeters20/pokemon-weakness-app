@@ -7,15 +7,32 @@ import { BoxPairEditor } from "./BoxPairEditor.tsx"
 interface BoxPanelProps {
   boxPairs: BoxPairData[]
   lockedNames: Set<string>
+  evoLockedNames: Set<string>
   deadNames: Set<string>
   activeNames: Set<string>
   boxedNames: Set<string>
   onAddBoxPair: (p1Name: string, p2Name: string, route: string, notes: string) => void
   onRemoveBoxPair: (id: string) => void
   onMarkBoxPairDead: (id: string) => void
+  onActivateReservePair: (id: string) => void
+  hasEmptySlot: boolean
 }
 
-export function BoxPanel({ boxPairs, lockedNames, deadNames, activeNames, boxedNames, onAddBoxPair, onRemoveBoxPair, onMarkBoxPairDead }: BoxPanelProps) {
+function getActivationBlockReason(
+  pair: BoxPairData,
+  evoLockedNames: Set<string>,
+  activeNames: Set<string>,
+): string | null {
+  for (const p of [pair.player1, pair.player2]) {
+    const name = p.pokemon?.name?.toLowerCase()
+    if (!name) return "Pair data not fully loaded"
+    if (evoLockedNames.has(name)) return `"${p.pokemon!.name}" evolution line is locked (in Graveyard)`
+    if (activeNames.has(name)) return `"${p.pokemon!.name}" is already on the active team`
+  }
+  return null
+}
+
+export function BoxPanel({ boxPairs, lockedNames, evoLockedNames, deadNames, activeNames, boxedNames, onAddBoxPair, onRemoveBoxPair, onMarkBoxPairDead, onActivateReservePair, hasEmptySlot }: BoxPanelProps) {
   const [showEditor, setShowEditor] = useState(false)
   const [confirmDeadId, setConfirmDeadId] = useState<string | null>(null)
 
@@ -123,6 +140,29 @@ export function BoxPanel({ boxPairs, lockedNames, deadNames, activeNames, boxedN
                       <EmptyPokemonSlot playerLabel="Player 2's" onClick={() => {}} />
                     )}
                   </div>
+                </div>
+                <div className="box-pair-activate-area">
+                  {(() => {
+                    const reason = getActivationBlockReason(pair, evoLockedNames, activeNames)
+                    const disabled = !hasEmptySlot || reason !== null
+                    return (
+                      <>
+                        <button
+                          className="box-pair-activate"
+                          disabled={disabled}
+                          onClick={() => onActivateReservePair(pair.id)}
+                          type="button"
+                        >
+                          Activate
+                        </button>
+                        {disabled && (
+                          <span className="box-pair-activate-reason">
+                            {!hasEmptySlot ? "No empty team slot" : reason}
+                          </span>
+                        )}
+                      </>
+                    )
+                  })()}
                 </div>
                 {pair.route && <span className="box-pair-route">{pair.route}</span>}
                 {pair.notes && <span className="box-pair-notes">{pair.notes}</span>}

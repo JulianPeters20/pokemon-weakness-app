@@ -26,6 +26,7 @@ export function App() {
     handleImport,
     handleReset,
     deadNames,
+    lockedNames,
     activeNames,
     boxedNames,
     unavailableNames,
@@ -33,6 +34,7 @@ export function App() {
     handleAddBoxPair,
     handleRemoveBoxPair,
     handleMarkBoxPairDead,
+    handleActivateReservePair,
   } = usePersistentRunState()
 
   const [showResetConfirm, setShowResetConfirm] = useState(false)
@@ -136,12 +138,15 @@ export function App() {
       <BoxPanel
         boxPairs={boxPairs}
         lockedNames={unavailableNames}
+        evoLockedNames={lockedNames}
         deadNames={deadNames}
         activeNames={activeNames}
         boxedNames={boxedNames}
         onAddBoxPair={handleAddBoxPair}
         onRemoveBoxPair={handleRemoveBoxPair}
         onMarkBoxPairDead={handleMarkBoxPairDead}
+        onActivateReservePair={handleActivateReservePair}
+        hasEmptySlot={slots.some((s) => !s.player1.pokemon && !s.player2.pokemon)}
       />
       <hr className="section-divider" />
       <EncounterTracker

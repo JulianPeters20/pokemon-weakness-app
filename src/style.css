@@ -1585,6 +1585,44 @@ h1, h2, h3 {
   min-width: 0;
 }
 
+.box-pair-activate-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--border);
+}
+
+.box-pair-activate {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.box-pair-activate:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.box-pair-activate:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.box-pair-activate-reason {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+  line-height: 1.3;
+}
+
 /* Box Pair Editor */
 .box-pair-editor {
   background: var(--bg);
