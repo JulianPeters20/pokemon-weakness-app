@@ -3,7 +3,7 @@ import { SoulLinkDashboard } from "./components/SoulLinkDashboard.tsx"
 import { EncounterTracker } from "./components/EncounterTracker.tsx"
 import { GraveyardPanel } from "./components/GraveyardPanel.tsx"
 import { BoxPanel } from "./components/BoxPanel.tsx"
-import { PokemonLookupSection } from "./components/PokemonLookupSection.tsx"
+import { CollapsibleBattleHelper } from "./components/CollapsibleBattleHelper.tsx"
 import { usePersistentRunState } from "./hooks/usePersistentRunState.ts"
 import { exportRunState, validateImportedRunState, readFileAsText } from "./utils/exportImport.ts"
 
@@ -193,7 +193,7 @@ export function App() {
         )}
       </div>
       <hr className="section-divider" />
-      <PokemonLookupSection />
+      <CollapsibleBattleHelper />
       {feedbackMsg && (
         <div className={`run-feedback run-feedback--${feedbackType}`}>
           {feedbackMsg}

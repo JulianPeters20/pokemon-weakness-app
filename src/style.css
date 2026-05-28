@@ -1917,3 +1917,71 @@ h1, h2, h3 {
   color: var(--text-muted);
   font-style: italic;
 }
+
+/* Collapsible Battle Helper */
+.collapsible-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.collapsible-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+.collapsible-header:hover {
+  background: #233044;
+  border-color: var(--accent);
+}
+
+.collapsible-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+.collapsible-icon {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.collapsible-icon.expanded {
+  transform: rotate(0deg);
+}
+
+.collapsible-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+
+.collapsible-content.expanded {
+  grid-template-rows: 1fr;
+}
+
+.collapsible-content-inner {
+  overflow: hidden;
+}
+
+.collapsible-content.expanded .collapsible-content-inner {
+  padding-top: 16px;
+}
+
+.collapsible-content-inner > .lookup-section {
+  border: 1px solid var(--border);
+}
