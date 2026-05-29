@@ -180,6 +180,7 @@ export interface BoxPairData {
   player2: SlotEntry
   route: string
   notes: string
+  priority: 1 | 2 | 3 | 4
 }
 
 export interface DeadPokemon {

@@ -35,6 +35,7 @@ export function App() {
     handleRemoveBoxPair,
     handleMarkBoxPairDead,
     handleActivateReservePair,
+    handleUpdateBoxPairPriority,
   } = usePersistentRunState()
 
   const [showResetConfirm, setShowResetConfirm] = useState(false)
@@ -146,6 +147,7 @@ export function App() {
         onRemoveBoxPair={handleRemoveBoxPair}
         onMarkBoxPairDead={handleMarkBoxPairDead}
         onActivateReservePair={handleActivateReservePair}
+        onUpdateBoxPairPriority={handleUpdateBoxPairPriority}
         hasEmptySlot={slots.some((s) => !s.player1.pokemon && !s.player2.pokemon)}
       />
       <hr className="section-divider" />

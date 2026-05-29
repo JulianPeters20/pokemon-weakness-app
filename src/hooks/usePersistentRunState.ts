@@ -340,7 +340,7 @@ export function usePersistentRunState() {
 
     setBoxPairs((prev) => [
       ...prev,
-      { id, player1: { ...loadingEntry }, player2: { ...loadingEntry }, route, notes },
+      { id, player1: { ...loadingEntry }, player2: { ...loadingEntry }, route, notes, priority: 2 },
     ])
 
     const [result1, result2] = await Promise.all([
@@ -394,6 +394,12 @@ export function usePersistentRunState() {
       })
     }
   }, [boxPairs, lockedNames])
+
+  const handleUpdateBoxPairPriority = useCallback((id: string, priority: 1 | 2 | 3 | 4) => {
+    setBoxPairs((prev) =>
+      prev.map((pair) => (pair.id === id ? { ...pair, priority } : pair)),
+    )
+  }, [])
 
   const handleActivateReservePair = useCallback((boxId: string) => {
     const pair = boxPairs.find((b) => b.id === boxId)
@@ -500,6 +506,7 @@ export function usePersistentRunState() {
     handleRemoveBoxPair,
     handleMarkBoxPairDead,
     handleActivateReservePair,
+    handleUpdateBoxPairPriority,
     getBlockReason,
   }
 }

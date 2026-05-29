@@ -2,7 +2,7 @@ import type { SoulLinkTeam, ProgressFilters, BoxPairData } from "../types.ts"
 import type { GraveyardEntry } from "../components/GraveyardPanel.tsx"
 
 export const STORAGE_KEY = "pokemon-unbound-soullink-state"
-const CURRENT_VERSION = 2
+const CURRENT_VERSION = 3
 
 export interface PersistedRunState {
   version: number
@@ -28,7 +28,8 @@ export function loadRunState(): PersistedRunState | null {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return null
     const parsed = JSON.parse(raw) as PersistedRunState
-    if (parsed.version !== CURRENT_VERSION) return null
+    const SUPPORTED = [CURRENT_VERSION - 1, CURRENT_VERSION]
+    if (!SUPPORTED.includes(parsed.version)) return null
     return parsed
   } catch {
     return null

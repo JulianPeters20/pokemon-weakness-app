@@ -1,7 +1,7 @@
 import { useState } from "react"
 import type { Pokemon } from "../types.ts"
 import { PokemonSearch } from "./PokemonSearch.tsx"
-import { CompactPokemonCard } from "./CompactPokemonCard.tsx"
+import { MiniPokemonRow } from "./MiniPokemonRow.tsx"
 
 export interface GraveyardEntry {
   id: string
@@ -114,9 +114,10 @@ export function GraveyardPanel({ player, entries, onAdd, onRemove, lockedNames, 
                 </button>
               </div>
             ) : entry.pokemon ? (
-              <CompactPokemonCard
+              <MiniPokemonRow
                 pokemon={entry.pokemon}
-                onClear={() => onRemove(entry.id)}
+                onRemove={() => onRemove(entry.id)}
+                playerLabel={entry.player === "player1" ? "P1" : "P2"}
               />
             ) : null}
           </div>

@@ -1,6 +1,6 @@
 import type { PersistedRunState } from "./storage.ts"
 
-const SUPPORTED_VERSIONS = [1, 2]
+const SUPPORTED_VERSIONS = [1, 2, 3]
 
 export interface ValidationResult {
   valid: boolean
